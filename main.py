@@ -1,4 +1,3 @@
-from random import randrange
 from game_board import GameBoard
 from computers_turn import Computer
 from players_turn import Player
