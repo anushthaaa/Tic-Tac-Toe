@@ -10,7 +10,7 @@ def printGameBoard(gameBoard):
             print(f" {gameBoard[row][col]} |", end="")
         print("\n+---+---+---+")
 
-def playerinput(gameBoard):
+def playerInput(gameBoard):
     ok = False
     while not ok:
         move = input("Enter your move: ")
@@ -27,7 +27,7 @@ def playerinput(gameBoard):
         if not ok: # already occupied
             print("Field is already occupied- repeat your input.")
             continue
-    sign = "O" # set "O" as users inp
+        gameBoard[row][colm] = "O" # set "O" as users inp
 
 def not_occupied_space(gameBoard):
     free = []
@@ -48,22 +48,27 @@ def check_victor(gameBoard, sgn):
     # checks rows com 
 
     for x in range(3):
-        if gameBoard[x][0] == sgn and gameBoard[x][1] and gameBoard[x][2] == sgn:
+        if gameBoard[x][0] == sgn and gameBoard[x][1] == sgn and gameBoard[x][2] == sgn:
             return who
-        if gameBoard[0][x] == sgn and gameBoard[1][x] and gameBoard[2][x] == sgn:
+    for x in range(3):
+        if gameBoard[0][x] == sgn and gameBoard[1][x] == sgn and gameBoard[2][x] == sgn:
             return who
-        # checks diagnols
-    if gameBoard[x][x] != sgn:
-        cross1 = False
-    if gameBoard[2-x][2-x] != sgn:
-        cross2 = False
+    
 
+    # for checking diagonals
+    if gameBoard[0][0] == sgn and gameBoard[1][1] == sgn and gameBoard[2][2] == sgn:
+        return who
+    
+    if gameBoard[0][2] == sgn and gameBoard[1][1] == sgn and gameBoard[2][0] == sgn:
+        return who
     return None
         
 def draw_move(gameBoard):
     """lets comp make a move"""
     free = not_occupied_space(gameBoard)
     count = len(free)
+
+    print("Computer is choosing its position...")
 
     # pick one random empty cell and place "X" there
     if count > 0:
@@ -72,24 +77,29 @@ def draw_move(gameBoard):
         gameBoard[row][colm] = "X"
 
 if __name__ == "__main__" :
-    print("----WELCOME TO TOC TAC TOE---")
+    print("----WELCOME TO TIC TAC TOE---")
     print(".............................")
+    print("\nYou are 'O' and the computer is 'X'\n")
 
     gameBoard = [[1,2,3], [4,5,6], [7,8,9]]
-    printGameBoard(gameBoard)
     free = not_occupied_space(gameBoard)
     your_turn = True
     victor = None
 
+    printGameBoard(gameBoard)
+
+
     while len(free):
-        printGameBoard(gameBoard)
         if your_turn:
-            playerinput(gameBoard)
+            playerInput(gameBoard)
             victor = check_victor(gameBoard, "O")
 
         else:
             draw_move(gameBoard)
             victor = check_victor(gameBoard, "X")
+
+        printGameBoard(gameBoard)
+
 
         if victor != None:
             break
@@ -97,13 +107,12 @@ if __name__ == "__main__" :
         your_turn = not your_turn
         free = not_occupied_space(gameBoard)
 
-    printGameBoard(gameBoard)
     if victor == "you":
-        print("You won!")
+        print("Congratulations, you won!")
     elif victor == "me":
-        print("I won")
+        print("OOPSS...I won. Better luck next time.")
     else:
-        print("Tie!")
+        print("IT'S A TIEEEE!")
 
     
 
